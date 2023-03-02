@@ -1,6 +1,6 @@
 /opt/log/sausage-store-backend.log {
   rotate 3
-  monthly
+  hourly
   compress
   delaycompress
   missingok
@@ -13,7 +13,7 @@
 }
 /opt/log/sausage-store-frontend.log {
   rotate 3
-  monthly
+  hourly
   compress
   delaycompress
   missingok
