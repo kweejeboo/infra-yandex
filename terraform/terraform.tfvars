@@ -1,3 +1,6 @@
 folder_id = "b1g2m7136g982ot032pf"
 cloud_id = "b1g3jddf4nv5e9okle7p"
-iam_token = "t1.9euelZrKzM2ckM2PnpTJjJ6OlY3Nze3rnpWamp6clsqcypibyJ2Pi5DHkJDl8_dccFNf-e8OAi4v_d3z91RiU1_57w4CLi_9.fbQdUw6TE1N74cNwqqkuIZtrEAOIhbnaMRabaGTnyEf5TtTtA33G0NMIi-_UCmYWjBEZssR6bIBu5UU5IUZADQ"
+subnet_id = "e9bi95vd74f8lp1mgdvm"
+disk_image_id = "fd80d7fnvf399b1c207j"
+zone = "ru-central1-a"
+federation_id = "bpfpfctkh7focc85u9sq"

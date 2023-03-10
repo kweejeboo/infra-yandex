@@ -1,9 +1,3 @@
-variable "vm_suffixes" {
-    default = ["main"]
-    type = list
-    description = "List of machines"
-}
-
 variable "vm_type" {
     default = "standard-v1"
     type = string
@@ -45,22 +39,10 @@ variable "resources_memory" {
     nullable = false
 }
 
-variable "disk_image_id" {
-    default = "fd80d7fnvf399b1c207j"
-    type = string
-    description = "Disk image"
-}
-
 variable "disk_size" {
     default = 40
     type = number
-    description = "Disk size"
-}
-
-variable "subnet_id" {
-    type = string
-    description = "ID of the subnet"
-    nullable = false
+    description = "Disk size GB"
 }
 
 variable "nat" {
@@ -69,8 +51,24 @@ variable "nat" {
     description = "provide a public address"
 }
 
-variable "federation_id" {
-    default = "bpfpfctkh7focc85u9sq"
+variable "subnet_id" {
     type = string
-    description = "YC federation ID"
+    description = "Subnet id"
+}
+
+variable "federation_id" {
+    type = string
+    description = "federation ID"
+}
+
+variable "disk_image_id" {
+    type = string
+    description = "What image should be used"
+}
+
+variable "name" {
+    default = "chapter5-lesson2-std-013-60"
+    type = string
+    description = "VM name"
+    nullable = false
 }

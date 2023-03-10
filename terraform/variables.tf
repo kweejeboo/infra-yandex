@@ -15,20 +15,27 @@ variable "folder_id" {
     description = "ID folder"
     nullable = false
 }
+
 variable "zone" {
-    default =  "ru-central1-a"
     type = string
     description = "YC geo zone"
     nullable = false
 }
 
 variable "disk_image_id" {
-    default = "fd80d7fnvf399b1c207j"
+   type = string
+   description = "Disk image"
+   nullable = false
+}
+
+variable "federation_id" {
     type = string
-    description = "Disk image"
+    description = "YC federation ID"
+    nullable = false
 }
 
 variable "subnet_id" {
-    default = "e9bi95vd74f8lp1mgdvm"
     type = string
+    description = "Subnet YC id"
+    nullable = false
 }
