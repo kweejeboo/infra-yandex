@@ -1,0 +1,6 @@
+folder_id = "b1g2m7136g982ot032pf"
+cloud_id = "b1g3jddf4nv5e9okle7p"
+subnet_id = "e9bi95vd74f8lp1mgdvm"
+disk_image_id = "fd80d7fnvf399b1c207j"
+zone = "ru-central1-a"
+federation_id = "bpfpfctkh7focc85u9sq"
