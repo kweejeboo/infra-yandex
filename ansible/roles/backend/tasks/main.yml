@@ -1,0 +1,65 @@
+- name: Update apt
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+
+- name: Install Java using ansible
+  become: true
+  apt:
+    name: "{{ packages }}" 
+  vars:
+    packages:
+      - python
+      - python3-pip
+      - python3
+      - openjdk-16-jdk
+
+- name: Install LXML
+  pip:
+    name: lxml
+    state: latest
+
+- name: Add service user Backend
+  user:
+    name: "{{ backend_user }}"
+    create_home: no
+    shell: /sbin/nologin
+
+- name: Create directory
+  file:
+    path: "{{ backend_path }}/log"
+    state: directory
+
+- name: Donwload artifact from NEXUS
+  maven_artifact:
+    dest: "{{ backend_path }}"
+    repository_url: "{{ backend_repository_url }}"
+    group_id: "{{ group_id }}"
+    artifact_id: "{{ artifact_id }}"
+    version: "{{ backend_version }}"
+    username: "{{ nexus_user }}"
+    password: "{{ nexus_password }}"
+
+- name: Add permission
+  ansible.builtin.file:
+    path: "{{ backend_path }}/sausage-store.jar"
+    owner: "{{ backend_user }}"
+    group: "{{ backend_user }}"
+    mode: '0777'
+
+- name: Copy unit-file
+  template:
+    src: "sausage-store-backend.service.j2"
+    dest: /etc/systemd/system/sausage-store-backend.service
+
+- name: Reloading systemd
+  systemd:
+    daemon_reload: true
+
+- name: Start BACKEND service
+  service:
+    name: sausage-store-backend
+    state: started
+    enabled: true

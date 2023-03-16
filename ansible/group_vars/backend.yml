@@ -1,0 +1,4 @@
+backend_repository_url: https://nexus.praktikum-services.ru/repository/sausage-store-savin-aleksandr-backend/
+backend_user: jarservice
+backend_version: 1.0.451060
+backend_path: /var/jarservice

@@ -1,0 +1,4 @@
+frontend_repository_url: https://nexus.praktikum-services.ru/repository/sausage-store-savin-aleksandr-frontend/{{ frontend_version }}/sausage-store-{{ frontend_version }}.tar.gz
+frontend_user: www-data
+frontend_version: 1.0.451059
+frontend_path: /var/www-data/dist
