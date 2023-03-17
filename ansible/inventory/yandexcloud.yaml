@@ -2,11 +2,11 @@ all:
   children:
     backend:
       hosts:
-        51.250.72.105:
+        158.160.53.118:
           ansible_user: ansible
     frontend:
       hosts:
-        51.250.72.105:
+        158.160.53.118:
           ansible_user: ansible
   vars: # Переменные для всех хостов в inventory
     ansible_connection: ssh

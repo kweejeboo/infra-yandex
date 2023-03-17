@@ -1,47 +1,56 @@
 
 - name: "Add nodejs apt key"
+  become: true
   apt_key:
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
     state: present
 
 - name: "Add nodejs 19.x ppa for apt repo"
+  become: true
   apt_repository:
     repo: deb https://deb.nodesource.com/node_19.x bionic main
     update_cache: yes
 
 - name: "Install nodejs"
+  become: true
   apt:
     update_cache: yes
     name: nodejs
     state: present
 
 - name: Install http-server
+  become: true
   npm:
     name: http-server
     global: yes
 
 - name: Add service user Frontend
+  become: true
   user:
     name: "{{ frontend_user }}"
     create_home: no
     shell: /sbin/nologin
 
 - name: Create directory
+  become: true
   file:
     path: "{{ frontend_path }}"
     state: directory
 
 - name: Create directory
+  become: true
   file:
     path: "{{ logs_path }}"
     state: directory
 
 - name: Create directory
+  become: true
   file:
     path: "{{ report_path }}"
     state: directory
 
 - name: Download NEXUS artficats
+  become: true
   ansible.builtin.get_url:
     url: "{{ frontend_repository_url }}"
     dest: "{{ frontend_path }}"
@@ -49,12 +58,14 @@
     password: "{{ nexus_password }}"
 
 - name: Unarchive a Sausage-store.tar.gz
+  become: true
   ansible.builtin.unarchive:
     src: "{{ frontend_path}}/sausage-store-{{ frontend_version}}.tar.gz"
     dest: "{{ frontend_path}}"
     remote_src: yes
 
 - name: Add permission
+  become: true
   ansible.builtin.file:
     path: "{{ frontend_path }}"
     owner: "{{ frontend_user }}"
@@ -62,15 +73,18 @@
     mode: '0755'
 
 - name: Copy unit-file
+  become: true
   template:
     src: "sausage-store-frontend.service.j2"
     dest: /etc/systemd/system/sausage-store-frontend.service
 
 - name: Reloading systemd
+  become: true
   systemd:
     daemon_reload: true
 
 - name: Start FRONTEND service
+  become: true
   service:
     name: sausage-store-frontend
     state: started

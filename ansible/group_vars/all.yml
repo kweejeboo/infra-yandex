@@ -2,6 +2,7 @@ logs_path : /opt/log
 report_path: /logs/reports
 group_id: com.yandex.practicum.devops
 artifact_id: sausage-store
+internal_ip: 10.128.0.163
 nexus_user: std-013-60
 nexus_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

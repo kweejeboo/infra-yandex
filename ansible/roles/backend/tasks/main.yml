@@ -17,22 +17,26 @@
       - openjdk-16-jdk
 
 - name: Install LXML
+  become: true
   pip:
     name: lxml
     state: latest
 
 - name: Add service user Backend
+  become: true
   user:
     name: "{{ backend_user }}"
     create_home: no
     shell: /sbin/nologin
 
 - name: Create directory
+  become: true
   file:
     path: "{{ backend_path }}/log"
     state: directory
 
 - name: Donwload artifact from NEXUS
+  become: true
   maven_artifact:
     dest: "{{ backend_path }}"
     repository_url: "{{ backend_repository_url }}"
@@ -43,6 +47,7 @@
     password: "{{ nexus_password }}"
 
 - name: Add permission
+  become: true
   ansible.builtin.file:
     path: "{{ backend_path }}/sausage-store.jar"
     owner: "{{ backend_user }}"
@@ -50,15 +55,18 @@
     mode: '0777'
 
 - name: Copy unit-file
+  become: true
   template:
     src: "sausage-store-backend.service.j2"
     dest: /etc/systemd/system/sausage-store-backend.service
 
 - name: Reloading systemd
+  become: true
   systemd:
     daemon_reload: true
 
 - name: Start BACKEND service
+  become: true
   service:
     name: sausage-store-backend
     state: started
