@@ -90,3 +90,25 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+# Создание индексов для оптимизации скорости обработки запросов в БД
+
+Не получилось добавить экстеншн pg_stat_statements в виду ошибки:
+
+CREATE EXTENSION pg_stat_statements;
+ERROR:  permission denied to create extension "pg_stat_statements"
+HINT:  Must be superuser to create this extension.
+
+Проходился руками, смотрел, пытался проанализировать, получилось примерно следующее:
+CREATE INDEX product_id_pkey ON product (id);
+CREATE INDEX product_order_id_product_id_idx ON product (order_id, product_id);
+
+CREATE INDEX orders_id_idx ON orders (id);
+
+CREATE INDEX order_product_id_pkey ON order_product (id);
+CREATE INDEX order_product_quantity_idx ON order_product (quantity);
+CREATE INDEX order_product_product_id_quantity_idx ON order_product (product_id, quantity);
+CREATE INDEX order_product_order_id_idx ON order_product (order_id);
+
+
+
