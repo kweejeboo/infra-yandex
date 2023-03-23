@@ -1,0 +1,11 @@
+- name: Play for Frontend
+  hosts: frontend
+  roles:
+    - frontend
+  vars_files: ./group_vars/frontend.yml
+
+- name: Play for Backend
+  hosts: backend
+  roles:
+    - backend
+  vars_files: ./group_vars/backend.yml
