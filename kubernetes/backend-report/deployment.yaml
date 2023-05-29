@@ -1,0 +1,27 @@
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-report
+spec:
+  containers:
+    - image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report:latest
+      name: backend-report
+      imagePullPolicy: IfNotPresent
+      env:
+      - name: DB
+        valueFrom:
+          secretKeyRef:
+            name: backend-report
+            key: db
+      - name: PORT
+        valueFrom:
+          secretKeyRef:
+            name: backend-report
+            key: port
+      ports:
+        - name: backend-report
+          containerPort: 8888
+  imagePullSecrets:
+    - name: docker-config-secret 
