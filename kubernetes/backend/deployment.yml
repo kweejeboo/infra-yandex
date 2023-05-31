@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report:latest
+          image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_DATASOURCE_URL
