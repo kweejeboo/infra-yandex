@@ -34,7 +34,7 @@ spec:
                 secretKeyRef:
                   name: backend
                   key: db_username
-            - name: SPRING_DATASOURCE_PASSWORD=
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: backend
