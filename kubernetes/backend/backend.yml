@@ -21,16 +21,24 @@ spec:
     spec:
       containers:
         - name: backend
-          image: gitlab.praktikum-services.ru:5050/<свой репо образа>/sausage-store/sausage-backend:<тег>
+          image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report:latest
           imagePullPolicy: IfNotPresent
           env:
-            - name: VAULT_HOST
-              value: 51.250.8.146
-            - name: VAULT_TOKEN
+            - name: SPRING_DATASOURCE_URL
               valueFrom:
                 secretKeyRef:
-                  name: vault
-                  key: vault_token
+                  name: backend
+                  key: db
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: backend
+                  key: db_username
+            - name: SPRING_DATASOURCE_PASSWORD=
+              valueFrom:
+                secretKeyRef:
+                  name: backend
+                  key: db_password
           ports:
             - name: backend
               containerPort: 8080
