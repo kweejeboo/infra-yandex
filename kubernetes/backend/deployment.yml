@@ -6,7 +6,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 2
+  replicas: 1 
   # Стратегия развёртывания. Recreate — удалит сначала все старые Pod'ы 
   # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять Pod'ы порциями  
   strategy:
@@ -22,8 +22,10 @@ spec:
       containers:
         - name: backend
           image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
+            - name: VIRTUAL_HOST
+              value: backend
             - name: SPRING_DATASOURCE_URL
               valueFrom:
                 secretKeyRef:
@@ -46,9 +48,9 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 15
+            initialDelaySeconds: 20
             periodSeconds: 30
-            timeoutSeconds: 1
+            timeoutSeconds: 2 
             failureThreshold: 6
       imagePullSecrets:
         - name: docker-config-secret
