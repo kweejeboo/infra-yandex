@@ -9,6 +9,7 @@ deploy:
   before_script:
   - export KUBECONFIG=${KUBECONFIG}
   script:
+  - echo $KUBE_CONFIG | base64 --decode > ~/.kube/config
   - kubectl get pods
   - kubectl apply -f ./kubernetes/backend
   - kubectl apply -f ./kubernetes/backend-report
