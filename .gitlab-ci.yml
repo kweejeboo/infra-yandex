@@ -6,14 +6,14 @@ deploy:
   image:
     name: bitnami/kubectl:latest
     entrypoint: ['']
-before_script:
+  before_script:
   - export KUBECONFIG=${KUBECONFIG}
-script:
+  script:
   - kubectl get pods
   - kubectl apply -f ./kubernetes/backend
   - kubectl apply -f ./kubernetes/backend-report
   - kubectl apply -f ./kubernetes/frontend
-environment:
+  environment:
   name: "Sausage store"
   url: ${KUBE_ENV_URL}
   only:
