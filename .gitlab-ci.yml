@@ -10,6 +10,7 @@ deploy:
   - export KUBECONFIG=${KUBECONFIG}
   script:
   - echo $KUBECONFIG
+  - echo $KUBECONFIG | base64 --decode
   - echo $KUBECONFIG | base64 --decode > ~/.kube/config
   - kubectl get pods
   - kubectl apply -f ./kubernetes/backend
