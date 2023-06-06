@@ -14,8 +14,8 @@ deploy:
   - kubectl apply -f ./kubernetes/backend-report
   - kubectl apply -f ./kubernetes/frontend
   environment:
-  name: "Sausage store"
-  url: ${KUBE_ENV_URL}
+    name: "Sausage store"
+    url: ${KUBE_ENV_URL}
   only:
     changes:
       - kubernetes/**/*
