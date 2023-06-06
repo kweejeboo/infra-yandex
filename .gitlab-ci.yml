@@ -10,6 +10,7 @@ deploy:
   - export KUBE_CONFIG=${KUBE_CONFIG}
   script:
   - echo $KUBE_CONFIG | base64 --decode > ~/.kube/config
+  - kubectl config use-context student-context
   - kubectl get pods
   - kubectl apply -f ./kubernetes/backend
   - kubectl apply -f ./kubernetes/backend-report
