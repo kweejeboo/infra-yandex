@@ -19,7 +19,7 @@ deploy:
     url: ${KUBE_ENV_URL}
   only:
     changes:
-      - **/*
+      - ./*
 
 
   
