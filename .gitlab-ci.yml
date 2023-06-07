@@ -1,0 +1,27 @@
+stages:
+- deploy
+
+deploy:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  before_script:
+  - export KUBE_CONFIG=${KUBE_CONFIG}
+  script:
+  - echo $KUBE_CONFIG | base64 --decode > ~/.kube/config
+  - kubectl config use-context student-context
+  - kubectl get pods
+  - kubectl apply -f ./kubernetes/backend
+  - kubectl apply -f ./kubernetes/backend-report
+  - kubectl apply -f ./kubernetes/frontend
+  environment:
+    name: "Sausage store"
+    url: ${KUBE_ENV_URL}
+  only:
+    changes:
+      - '*'
+
+
+  
+
