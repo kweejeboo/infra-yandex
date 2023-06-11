@@ -25,7 +25,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: frontend
+              - key: app
                 operator: In
                 values:
                 - frontend
