@@ -20,6 +20,16 @@ spec:
       labels:
         app: frontend
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: frontend
+                operator: In
+                values:
+                - frontend
+                
       containers:
       - image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-frontend:latest
         name: frontend
