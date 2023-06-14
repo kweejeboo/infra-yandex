@@ -1,0 +1,9 @@
+# values.yaml
+backend: # Это имя чарта из dependencies
+  # Вместо latest правильнее использовать версию .Chart.AppVersion в шаблоне
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend
+  <...>
+
+frontend:
+  fqdn: std-013-60.k8s.praktikum-services.tech
+  <...> 
