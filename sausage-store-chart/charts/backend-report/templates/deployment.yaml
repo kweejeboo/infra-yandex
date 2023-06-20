@@ -21,7 +21,7 @@ spec:
         app: {{ .Values.backend-report.appName }}
     spec:
       containers:
-        - image: "{{ .Values.backend-report.image }}:{{ .Chart.appVersion }}"
+        - image: "{{ .Values.backend-report.image }}:{{ .Chart.AppVersion }}"
           name: {{ .Values.backend-report.appName }}
           imagePullPolicy: {{ .Values.backend-report.spec.imagePullPolicy }}
           env:
