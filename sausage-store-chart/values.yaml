@@ -5,9 +5,10 @@ backend: # Это имя чарта из dependencies
   appName: backend
   description: Sausage Store Backend Helm Chart
   containerName: "*"
-  port: 8080
-  targetPort: 8080
-  protocol: TCP
+  ports:
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
   spec:
     replicas: 3
     revisionHistoryLimit: 15 
