@@ -5,13 +5,13 @@ backend: # Это имя чарта из dependencies
   appName: backend
   description: Sausage Store Backend Helm Chart
   containerName: "*"
-  ports:
-    port: 8080
-    targetPort: 8080
-    protocol: TCP
   spec:
     replicas: 3
-    revisionHistoryLimit: 15 
+    revisionHistoryLimit: 15
+    ports:
+      port: 8080
+      targetPort: 8080
+      protocol: TCP 
   livenessProbe:
     path: /actuator/health
     initialDelaySeconds: 20
@@ -65,11 +65,11 @@ frontend:
       operator: In
     strategy:
       type: Recreate
-  ports:
-    protocol: TCP
-    port: 80
-    targetPort: 80
-    containerPort: 1080
+    ports:
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      containerPort: 1080
   volumes:
     name: nginx-conf
     mountPath: /etc/nginx/conf.d/
