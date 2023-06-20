@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.frontend.appName }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Values.frontend.appName }}
+    app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.frontend.spec.replicas }}
   revisionHistoryLimit: {{ .Values.frontend.spec.revisionHistoryLimit }}
@@ -14,11 +14,11 @@ spec:
     type: {{ .Values.frontend.spec.strategy.type }}
   selector:
     matchLabels:
-      app: {{ .Values.frontend.appName }}
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.frontend.appName }}
+        app: {{ .Chart.Name }}
     spec:
       affinity:
         nodeAffinity:
@@ -28,11 +28,11 @@ spec:
               - key: {{ .Values.frontend.spec.affinity.key }}
                 operator: {{ .Values.frontend.spec.affinity.operator }}
                 values:
-                - {{ .Values.frontend.appName }}
+                - {{ .Chart.Name }}
                 
       containers:
       - image: "{{ .Values.frontend.image }}:{{ .Chart.AppVersion }}"
-        name: {{ .Values.frontend.appName }}
+        name: {{ .Chart.Name }}
         imagePullPolicy: {{ .Values.frontend.imagePullPolicy}}
         ports:
         - containerPort: {{ .Values.frontend.ports.containerPort }}

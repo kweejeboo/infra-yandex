@@ -1,8 +1,8 @@
 ---
 apiVersion: v2
 type: application
-name: {{ .Values.frontend.appName }}
-description: {{  .Values.frontend.description }}
+name: frontend
+description: Sausage Store Frontend Chart for Helm
 
 version: 0.1.0
 appVersion: "latest"

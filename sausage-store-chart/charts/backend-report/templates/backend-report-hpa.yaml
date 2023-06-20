@@ -2,16 +2,16 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .Values.backend-report.appName }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Values.backend-report.appName }}
+    app: {{ .Chart.Name }}
 spec:
   minReplicas: {{ .Values.backend-report.spec.minReplicas }}
   maxReplicas: {{ .Values.backend-report.spec.maxReplicas }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ .Values.backend-report.appName }}
+    name: {{ .Chart.Name }}
   metrics:
   - type: {{ .Values.backend-report.metrics.type }}
     resource:

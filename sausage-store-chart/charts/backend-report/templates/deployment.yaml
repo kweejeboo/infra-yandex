@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.backend-report.appName }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Values.backend-report.appName }}
+    app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.backend-report.spec.replicas }}
   revisionHistoryLimit: {{ .Values.backend-report.spec.revisionHistoryLimit }}
@@ -14,29 +14,29 @@ spec:
     type: {{ .Values.backend-report.strategy.type }}
   selector:
     matchLabels:
-      app: {{ .Values.backend-report.appName }}
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.backend-report.appName }}
+        app: {{ .Chart.Name }}
     spec:
       containers:
         - image: "{{ .Values.backend-report.image }}:{{ .Chart.AppVersion }}"
-          name: {{ .Values.backend-report.appName }}
+          name: {{ .Chart.Name }}
           imagePullPolicy: {{ .Values.backend-report.spec.imagePullPolicy }}
           env:
             - name: {{ .Values.backend-report.env.db }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.backend-report.appName }}
+                  name: {{ .Chart.Name }}
                   key: db
             - name: {{ .Values.backend-report.env.port }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.backend-report.appName }}
+                  name: {{ .Chart.Name }}
                   key: port
           ports:
-            - name: {{ .Values.backend-report.appName }}
+            - name: {{ .Chart.Name }}
               containerPort: {{ .Values.backend-report.ports.containerPort }}
       imagePullSecrets:
       - name: {{ .Values.backend-report.imagePullSecrets.name }}

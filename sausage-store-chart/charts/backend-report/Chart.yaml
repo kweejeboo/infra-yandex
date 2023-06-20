@@ -1,8 +1,8 @@
 ---
 apiVersion: v2
 type: application
-name: {{ .Values.backend-report.appName }}
-description: {{  .Values.backend-report.description }}
+name: backend-report
+description: Sausage Store Backend Report Chart for Helm
 
 version: 0.1.0
 appVersion: "latest"

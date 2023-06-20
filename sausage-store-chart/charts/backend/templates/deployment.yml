@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.backend.appName }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Values.backend.appName }}
+    app: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.backend.spec.replicas }}
   revisionHistoryLimit: {{ .Values.backend.spec.revisionHistoryLimit }}
@@ -17,41 +17,41 @@ spec:
       maxSurge: {{ .Values.backend.strategy.rollingUpdate.maxSurge }}
   selector:
     matchLabels:
-      app: {{ .Values.backend.appName }}
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.backend.appName }}
+        app: {{ .Chart.Name }}
     spec:
       containers:
-        - name: {{ .Values.backend.appName }}
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.backend.image}}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.backend.appName }}
+          imagePullPolicy: {{ .Chart.Name }}
           env:
             - name: {{ .Values.backend.env.virtual_host }}
-              value: {{ .Values.backend.appName }}
+              value: {{ .Chart.Name }}
             - name: {{ .Values.backend.env.spring_url }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.backend.appName }}
+                  name: {{ .Chart.Name }}
                   key: db
             - name: {{ .Values.backend.env.spring_username }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.backend.appName }}
+                  name: {{ .Chart.Name }}
                   key: db_username
             - name: {{ .Values.backend.env.spring_password }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.backend.appName }}
+                  name: {{ .Chart.Name }}
                   key: db_password
             - name: {{ .Values.backend.env.mongo_uri }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.backend.appName }}
+                  name: {{ .Chart.Name }}
                   key: db_mongo
           ports:
-            - name: {{ .Values.backend.appName }}
+            - name: {{ .Chart.Name }}
               containerPort: {{ .Values.backend.port}}
           livenessProbe:
             httpGet:

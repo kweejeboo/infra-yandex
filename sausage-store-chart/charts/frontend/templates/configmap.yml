@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.frontend.volumes.name }}
+  name: {{ .Chart.Name }}
 data:
   nginx.conf: |
     
