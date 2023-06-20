@@ -4,5 +4,5 @@ type: application
 name: {{ .Values.backend-report.appName }}
 description: {{  .Values.backend-report.description }}
 
-version: {{ .Chart.version }}
-appVersion: {{ .Chart.AppVersion }}
+version: 0.1.0
+appVersion: "latest"

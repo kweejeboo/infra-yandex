@@ -4,5 +4,5 @@ type: application
 name: {{ .Values.frontend.appName }}
 description: {{  .Values.frontend.description }}
 
-version: {{ .Chart.version }}
-appVersion: {{ .Chart.AppVersion }}
+version: 0.1.0
+appVersion: "latest"
