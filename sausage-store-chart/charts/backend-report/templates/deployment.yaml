@@ -6,12 +6,12 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
 spec:
-  replicas: {{ .Values.backend-report.spec.replicas }}
-  revisionHistoryLimit: {{ .Values.backend-report.spec.revisionHistoryLimit }}
+  replicas: {{ .Values.backend_report.spec.replicas }}
+  revisionHistoryLimit: {{ .Values.backend_report.spec.revisionHistoryLimit }}
   # Стратегия развёртывания. Recreate — удалит сначала все старые Pod'ы 
   # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять Pod'ы порциями  
   strategy:
-    type: {{ .Values.backend-report.strategy.type }}
+    type: {{ .Values.backend_report.strategy.type }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -21,22 +21,22 @@ spec:
         app: {{ .Chart.Name }}
     spec:
       containers:
-        - image: "{{ .Values.backend-report.image }}:{{ .Chart.AppVersion }}"
+        - image: "{{ .Values.backend_report.image }}:{{ .Chart.AppVersion }}"
           name: {{ .Chart.Name }}
-          imagePullPolicy: {{ .Values.backend-report.spec.imagePullPolicy }}
+          imagePullPolicy: {{ .Values.backend_report.spec.imagePullPolicy }}
           env:
-            - name: {{ .Values.backend-report.env.db }}
+            - name: {{ .Values.backend_report.env.db }}
               valueFrom:
                 secretKeyRef:
                   name: {{ .Chart.Name }}
                   key: db
-            - name: {{ .Values.backend-report.env.port }}
+            - name: {{ .Values.backend_report.env.port }}
               valueFrom:
                 secretKeyRef:
                   name: {{ .Chart.Name }}
                   key: port
           ports:
             - name: {{ .Chart.Name }}
-              containerPort: {{ .Values.backend-report.ports.containerPort }}
+              containerPort: {{ .Values.backend_report.ports.containerPort }}
       imagePullSecrets:
-      - name: {{ .Values.backend-report.imagePullSecrets.name }}
+      - name: {{ .Values.backend_report.imagePullSecrets.name }}
