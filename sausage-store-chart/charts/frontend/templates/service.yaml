@@ -10,8 +10,8 @@ spec:
   selector:
     app: {{ .Chart.Name }}
   ports:
-  - protocol: {{ .Values.frontend.ports.protocol }}
-    port: {{ .Values.frontend.ports.port }}
-    targetPort: {{ .Values.frontend.ports.targerPort }}
+  - protocol: {{ .Values.frontend.spec.ports.protocol }}
+    port: {{ .Values.frontend.spec.ports.port }}
+    targetPort: {{ .Values.frontend.spec.ports.targerPort }}
   
 
