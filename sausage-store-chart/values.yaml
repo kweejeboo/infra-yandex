@@ -2,7 +2,48 @@
 backend: # Это имя чарта из dependencies
   # Вместо latest правильнее использовать версию .Chart.AppVersion в шаблоне
   image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend
-  <...>
+  appName: backend
+  containerName: "*"
+  port: 8080
+  targetPort: 8080
+  protocol: TCP
+  spec:
+    replicas: 3
+    revisionHistoryLimit: 15 
+  livenessProbe:
+    path: /actuator/health
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    imeoutSeconds: 10 
+    failureThreshold: 6
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 2
+      maxSurge: "20%"
+  imagePullSecrets:
+    name: docker-config-secret
+  env:
+    spring_url: SPRING_DATASOURCE_URL
+    spring_username: SPRING_DATASOURCE_USERNAME
+    spring_password: SPRING_DATASOURCE_PASSWORD
+    virtual_host: VIRTUAL_HOST
+    mongo_uri: SPRING_DATA_MONGODB_URI
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      minAllowed:
+        cpu: 0m
+        memory: 0Mi
+      maxAllowed:
+        cpu: 0.5
+        memory: 500Mi
+      controlledResources: ["cpu", "memory"]
+      controlledValues: RequestsAndLimits 
+
+  
+
 
 frontend:
   fqdn: std-013-60.k8s.praktikum-services.tech

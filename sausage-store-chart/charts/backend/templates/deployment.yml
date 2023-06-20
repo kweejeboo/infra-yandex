@@ -2,64 +2,64 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: {{ .Values.backend.appName }}
   labels:
-    app: backend
+    app: {{ .Values.backend.appName }}
 spec:
-  replicas: 3
-  revisionHistoryLimit: 15 
+  replicas: {{ .Values.backend.spec.replicas }}
+  revisionHistoryLimit: {{ .Values.backend.spec.revisionHistoryLimit }}
   # Стратегия развёртывания. Recreate — удалит сначала все старые Pod'ы 
   # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять Pod'ы порциями  
   strategy:
-    type: RollingUpdate
+    type: {{ .Values.backend.strategy.type }}
     rollingUpdate:
-      maxUnavailable: 2
-      maxSurge: "20%"
+      maxUnavailable: {{ .Values.backend.strategy.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.backend.strategy.rollingUpdate.maxSurge }}
   selector:
     matchLabels:
-      app: backend
+      app: {{ .Values.backend.appName }}
   template:
     metadata:
       labels:
-        app: backend
+        app: {{ .Values.backend.appName }}
     spec:
       containers:
-        - name: backend
-          image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend:latest
-          imagePullPolicy: Always
+        - name: {{ .Values.backend.appName }}
+          image: {{ .Values.backend.image}}:{{ .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.backend.appName }}
           env:
-            - name: VIRTUAL_HOST
-              value: backend
-            - name: SPRING_DATASOURCE_URL
+            - name: {{ .Values.backend.env.virtual_host }}
+              value: {{ .Values.backend.appName }}
+            - name: {{ .Values.backend.env.spring_url }}
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: {{ .Values.backend.appName }}
                   key: db
-            - name: SPRING_DATASOURCE_USERNAME
+            - name: {{ .Values.backend.env.spring_username }}
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: {{ .Values.backend.appName }}
                   key: db_username
-            - name: SPRING_DATASOURCE_PASSWORD
+            - name: {{ .Values.backend.env.spring_password }}
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: {{ .Values.backend.appName }}
                   key: db_password
-            - name: SPRING_DATA_MONGODB_URI
+            - name: {{ .Values.backend.env.mongo_uri }}
               valueFrom:
                 secretKeyRef:
-                  name: backend
+                  name: {{ .Values.backend.appName }}
                   key: db_mongo
           ports:
-            - name: backend
-              containerPort: 8080
+            - name: {{ .Values.backend.appName }}
+              containerPort: {{ .Values.backend.port}}
           livenessProbe:
             httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 30
-            timeoutSeconds: 10 
-            failureThreshold: 6
+              path: {{ .Values.backend.livenessProbe.path}}
+              port: {{ .Values.backend.port}}
+            initialDelaySeconds: {{ .Values.backend.livenessProbe.initialDelaySeconds}}
+            periodSeconds: {{ .Values.backend.livenessProbe.periodSeconds}}
+            timeoutSeconds: {{ .Values.backend.livenessProbe.timeoutSeconds}} 
+            failureThreshold: {{ .Values.backend.livenessProbe.failureThreshold}}
       imagePullSecrets:
-        - name: docker-config-secret
+        - name: {{ .Values.backend.imagePullSecrets.name }}
