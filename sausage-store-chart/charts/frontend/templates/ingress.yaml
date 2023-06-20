@@ -2,26 +2,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: frontend-ingress
+  name: {{ .Values.frontend.ingressName }}
 spec:
   # В кластере может быть несколько Ingress Controllers, мы используем NGINX
-  ingressClassName: "nginx"
+  ingressClassName: {{ .Values.frontend.spec.ingressClassName }}
   tls:
     - hosts:
-        - "std-013-60.k8s.praktikum-services.tech"
+        - {{ .Values.frontend.fqdn }}
   rules:
     # Хост определяет правило направления траффика по доменному имени
-  - host: "std-013-60.k8s.praktikum-services.tech"
+  - host: {{ .Values.frontend.fqdn }}
     http:
       # Для различных путей в URL можно указать различные бэкенд-сервисы
       paths:
-      - path: /
-        pathType: Prefix
+      - path: {{ .Values.frontend.spec.path }}
+        pathType: {{ .Values.frontend.spec.pathType }}
         backend:
           service:
             # Заранее создан сервис типа ClusterIP
             # Он выступает в качестве бэкенда нашего Ingress
-            name: frontend
+            name: {{ .Values.frontend.appName }}
             port:
               # У сервиса может быть несколько портов, указываем нужный нам
-              number: 80 
+              number: {{ .Values.frontend.ports.port }}

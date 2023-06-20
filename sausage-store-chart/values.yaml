@@ -3,6 +3,7 @@ backend: # Это имя чарта из dependencies
   # Вместо latest правильнее использовать версию .Chart.AppVersion в шаблоне
   image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend
   appName: backend
+  description: Sausage Store Backend Helm Chart
   containerName: "*"
   port: 8080
   targetPort: 8080
@@ -46,5 +47,62 @@ backend: # Это имя чарта из dependencies
 
 
 frontend:
+  appName: frontend
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-frontend
   fqdn: std-013-60.k8s.praktikum-services.tech
-  <...> 
+  description: Sausage Store Frontend Helm Chart
+  imagePullPolicy: Always
+  ingressName: frontend-ingress
+  spec:
+    path: /
+    pathType: Prefix
+    ingressClassName: "nginx"
+    replicas: 1
+    revisionHistoryLimit: 15   
+    affinity:
+      key: app
+      operator: In
+    strategy:
+      type: Recreate
+  ports:
+    protocol: TCP
+    port: 80
+    targetPort: 80
+    containerPort: 1080
+  volumes:
+    name: nginx-conf
+    mountPath: /etc/nginx/conf.d/
+    configMap:
+      items:
+        key: nginx.conf
+        path: default.conf
+  imagePullSecrets:
+    name: docker-config-secret
+  env:
+   defHost: DEFAULT_HOST
+
+
+
+
+backend-report:
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report
+  appName: backend-report
+  ports:
+    containerPort: 8888
+  imagePullSecrets:
+    name: docker-config-secret
+  strategy:
+    type: Recreate
+  spec:
+    imagePullPolicy: IfNotPresent
+    minReplicas: 1
+    maxReplicas: 5
+  metrics:
+    type: Resource
+    name: cpu
+    target:
+      type: Utilization
+      averageUtilization: 75
+  env:
+    db: DB
+    port: PORT

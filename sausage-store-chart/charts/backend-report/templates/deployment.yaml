@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.backend-report.appName }}
+  labels:
+    app: {{ .Values.backend-report.appName }}
+spec:
+  replicas: {{ .Values.backend-report.spec.replicas }}
+  revisionHistoryLimit: {{ .Values.backend-report.spec.revisionHistoryLimit }}
+  # Стратегия развёртывания. Recreate — удалит сначала все старые Pod'ы 
+  # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять Pod'ы порциями  
+  strategy:
+    type: {{ .Values.backend-report.strategy.type }}
+  selector:
+    matchLabels:
+      app: {{ .Values.backend-report.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.backend-report.appName }}
+    spec:
+      containers:
+        - image: {{ .Values.backend-report.image }}:{{ .Chart.appVersion }}
+          name: {{ .Values.backend-report.appName }}
+          imagePullPolicy: {{ .Values.backend-report.spec.imagePullPolicy }}
+          env:
+            - name: {{ .Values.backend-report.env.db }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backend-report.appName }}
+                  key: db
+            - name: {{ .Values.backend-report.env.port }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backend-report.appName }}
+                  key: port
+          ports:
+            - name: {{ .Values.backend-report.appName }}
+              containerPort: {{ .Values.backend-report.ports.containerPort }}
+      imagePullSecrets:
+      - name: {{ .Values.backend-report.imagePullSecrets.name }}

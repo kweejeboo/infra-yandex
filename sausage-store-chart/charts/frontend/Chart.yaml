@@ -1,9 +1,8 @@
 ---
 apiVersion: v2
 type: application
-name: {{ .Values.backend.appName }}
-description: {{ .Values.backend.description }}
+name: {{ .Values.frontend.appName }}
+description: {{  .Values.frontend.description }}
 
 version: {{ .Chart.version }}
 appVersion: {{ .Chart.AppVersion }}
-

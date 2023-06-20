@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.frontend.appName }}
+  labels:
+    app: {{ .Values.frontend.appName }}
+spec:
+  replicas: {{ .Values.frontend.spec.replicas }}
+  revisionHistoryLimit: {{ .Values.frontend.spec.revisionHistoryLimit }}
+  # Стратегия развёртывания. Recreate — удалит сначала все старые Pod'ы 
+  # Есть и более гибкая стратегии, например, RollingUpdate, которая будет обновлять Pod'ы порциями  
+  strategy:
+    type: {{ .Values.frontend.spec.strategy.type }}
+  selector:
+    matchLabels:
+      app: {{ .Values.frontend.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.frontend.appName }}
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: {{ .Values.frontend.spec.affinity.key }}
+                operator: {{ .Values.frontend.spec.affinity.operator }}
+                values:
+                - {{ .Values.frontend.appName }}
+                
+      containers:
+      - image: {{ .Values.frontend.image }}:{{ .Chart.appVersion }}
+        name: {{ .Values.frontend.appName }}
+        imagePullPolicy: {{ .Values.frontend.imagePullPolicy}}
+        ports:
+        - containerPort: {{ .Values.frontend.ports.containerPort }}
+        env:
+          - name: {{ .Values.frontend.env.defHost }}
+            value: {{ .Values.backend.appName }}
+        volumeMounts:
+        - name: {{ .Values.frontend.volumes.name }}
+          mountPath: {{ .Values.frontend.volumes.mountPath }}
+          
+      volumes:
+        - name: {{ .Values.frontend.volumes.name }}
+          configMap:
+            name: {{ .Values.frontend.volumes.name }}
+            items:
+              - key: {{ .Values.frontend.volumes.configMap.items.key }}
+                path: {{ .Values.frontend.volumes.configMap.items.path }}
+      imagePullSecrets:
+      - name: {{ .Values.frontend.imagePullSecrets.name }}
