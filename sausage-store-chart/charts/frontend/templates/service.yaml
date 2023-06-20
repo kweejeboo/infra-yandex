@@ -10,6 +10,6 @@ spec:
   selector:
     app: {{ .Chart.Name }}
   ports:
-{{  toYaml .Values.spec.ports | indent 4}}
+{{  toYaml .Values.spec.ports | indent 4 }}
   
 
