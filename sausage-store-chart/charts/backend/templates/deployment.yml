@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.backend.appName }}
-          image: {{ .Values.backend.image}}:{{ .Chart.AppVersion }}
+          image: "{{ .Values.backend.image}}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.backend.appName }}
           env:
             - name: {{ .Values.backend.env.virtual_host }}

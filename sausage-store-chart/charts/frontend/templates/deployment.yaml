@@ -31,7 +31,7 @@ spec:
                 - {{ .Values.frontend.appName }}
                 
       containers:
-      - image: {{ .Values.frontend.image }}:{{ .Chart.appVersion }}
+      - image: "{{ .Values.frontend.image }}:{{ .Chart.appVersion }}"
         name: {{ .Values.frontend.appName }}
         imagePullPolicy: {{ .Values.frontend.imagePullPolicy}}
         ports:
