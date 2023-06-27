@@ -28,7 +28,7 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
-{{ toYaml .Values.spec | indent 2 }}
+{{ toYaml .Values.spec | indent 6 }}
       containers:
       - image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
         name: {{ .Chart.Name }}
