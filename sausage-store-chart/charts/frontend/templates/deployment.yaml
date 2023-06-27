@@ -39,14 +39,8 @@ spec:
           - name: DEFAULT_HOST
             value: backend
         volumeMounts:
-        - name: {{ .Values.configMapName | quote }}
-          mountPath: /etc/nginx/conf.d/          
+{{ toYaml .Values.volumeMounts | indent 8 }}        
       volumes:
-        - name: {{ .Values.configMapConf | quote }}
-          configMap:
-            name: {{ .Values.configMapConf | quote }}
-            items:
-              - key: {{ .Values.configMapConf | quote }}
-                path: default.conf
+{{ toYaml .Values.volumes | indent 12 }}
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets.name }}

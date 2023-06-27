@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.configMapName | quote }}
+  name: nginx-conf
 data:
   nginx.conf: |
     
