@@ -79,7 +79,7 @@ frontend:
   imagePullSecrets:
     name: docker-config-secret
   configMapConf: nginx.conf
-  configMapName: nginx-conf
+  configMapName: nginxconf
   http:
     paths:
     - path: /
