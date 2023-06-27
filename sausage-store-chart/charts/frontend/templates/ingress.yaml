@@ -1,0 +1,16 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}-ingress
+spec:
+  # В кластере может быть несколько Ingress Controllers, мы используем NGINX
+  ingressClassName: "nginx"
+  tls:
+    - hosts:
+        - {{ .Values.fqdn }}
+  rules:
+    # Хост определяет правило направления траффика по доменному имени
+  - host: {{ .Values.fqdn }}
+    http:
+{{ toYaml .Values.http | indent 6 }}

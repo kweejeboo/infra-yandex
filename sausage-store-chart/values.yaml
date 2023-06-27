@@ -1,4 +1,5 @@
 backend:
+  environment: production
   livenessProbe:
     httpGet:
       path: /actuator/health
@@ -31,5 +32,65 @@ backend:
     maxAllowed:
       cpu: 0.5
       memory: 500Mi
+
+backend-report:
+  environment: production
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  replicas: 1
+  revisionHistoryLimit: 15
+  strategy:
+    type: Recreate
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report
+  imagePullPolicy: IfNotPresent
+  containerPort: 8888
+  imagePullSecrets: docker-config-secret
+
+frontend:
+  environment: production
+  fqdn: std-013-60.k8s.praktikum-services.tech
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-frontend
+  replicas: 1
+  revisionHistoryLimit: 15 
+  strategyType: Recreate
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - frontend
+  imagePullPolicy: Always
+  ports:
+    port: 80
+    targetPort: 80
+    protocol: TCP
+    containerPort: 1080
+  imagePullSecrets:
+    name: docker-config-secret
+  configMapConf: nginx.conf
+  configMapName: nginx-conf
+  http:
+    paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          name: frontend
+          port:
+            number: 80  
+
+
+
 
 
