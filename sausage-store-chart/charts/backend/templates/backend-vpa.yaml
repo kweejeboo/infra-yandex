@@ -2,22 +2,22 @@
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}-vpa
 spec:
   targetRef:
     apiVersion: "apps/v1"
     kind: Deployment
     name: {{ .Chart.Name }}
   updatePolicy:
-    updateMode: {{ .Values.backend.updatePolicy.updateMode }}
+    updateMode: {{ .Values.updatePolicy.updateMode }}
   resourcePolicy:
     containerPolicies:
-      - containerName: {{ .Values.backend.containerName }}
+      - containerName: "*"
         minAllowed:
-          cpu: {{ .Values.backend.resourcePolicy.containerPolicies.minAllowed.cpu }}
-          memory: {{ .Values.backend.resourcePolicy.containerPolicies.minAllowed.memory }}
+          cpu: {{ .Values.resourcePolicy.minAllowed.cpu }}
+          memory: {{ .Values.resourcePolicy.minAllowed.memory }}
         maxAllowed:
-          cpu: {{ .Values.backend.resourcePolicy.containerPolicies.maxAllowed.cpu }}
-          memory: {{ .Values.backend.resourcePolicy.containerPolicies.maxAllowed.memory }}
-        controlledResources: {{ .Values.backend.resourcePolicy.containerPolicies.controlledResources }}
-        controlledValues: {{ .Values.backend.resourcePolicy.containerPolicies.controlledValues }}
+          cpu: {{ .Values.resourcePolicy.maxAllowed.cpu }}
+          memory: {{ .Values.resourcePolicy.maxAllowed.memory }}
+        controlledResources: ["cpu", "memory"]
+        controlledValues: RequestsAndLimits 

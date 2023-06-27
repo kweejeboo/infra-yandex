@@ -7,9 +7,9 @@ metadata:
     app: {{ .Chart.Name }}
 spec:
   type: ClusterIP
+  ports:
+    - port: {{ .Values.ports.port }}
+      protocol: {{ .Values.ports.protocol }}
+      targetPort: {{ .Values.ports.port }}
   selector:
     app: {{ .Chart.Name }}
-  ports:
-{{  toYaml .Values.spec.ports | indent 4 }}
-  
-
