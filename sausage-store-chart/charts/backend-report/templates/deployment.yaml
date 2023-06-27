@@ -33,16 +33,7 @@ spec:
           name: {{ .Chart.Name }}
           imagePullPolicy: {{ .Values.imagePullPolicy}}
           env:
-            - name: DB
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Chart.Name }}
-                  key: db
-            - name: PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Chart.Name }}
-                  key: port
+{{ toYaml .Values.env | indent 12 }}
           ports:
             - name: {{ .Chart.Name }}
               containerPort: {{ .Values.containerPort }}

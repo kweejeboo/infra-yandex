@@ -50,8 +50,21 @@ backend-report:
     type: Recreate
   image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report
   imagePullPolicy: IfNotPresent
+  protocol: TCP
   containerPort: 8888
   imagePullSecrets: docker-config-secret
+  env:
+    - name: DB
+      valueFrom:
+        secretKeyRef:
+          name: backend-report
+          key: db
+    - name: PORT
+      valueFrom:
+        secretKeyRef:
+          name: backend-report
+          key: port
+
 
 frontend:
   environment: production
