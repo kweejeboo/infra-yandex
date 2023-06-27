@@ -78,8 +78,6 @@ frontend:
     containerPort: 1080
   imagePullSecrets:
     name: docker-config-secret
-  configMapConf: nginx.conf
-  configMapName: nginxconf
   http:
     paths:
     - path: /
