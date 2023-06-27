@@ -39,14 +39,14 @@ spec:
           - name: DEFAULT_HOST
             value: backend
         volumeMounts:
-        - name: nginx-conf
+        - name: {{ .Values.configMapName | quote }}
           mountPath: /etc/nginx/conf.d/          
       volumes:
-        - name: nginx.conf
+        - name: {{ .Values.configMapConf | quote }}
           configMap:
-            name: nginx.conf
+            name: {{ .Values.configMapConf | quote }}
             items:
-              - key: nginx.conf
+              - key: {{ .Values.configMapConf | quote }}
                 path: default.conf
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets.name }}

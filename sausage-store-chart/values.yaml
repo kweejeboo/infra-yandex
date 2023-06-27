@@ -86,7 +86,9 @@ frontend:
         service:
           name: frontend
           port:
-            number: 80  
+            number: 80
+  configMapName: nginx-conf
+  configMapConf: nginx.conf
 
 
 
