@@ -1,0 +1,119 @@
+backend:
+  environment: production
+  livenessProbe:
+    httpGet:
+      path: /actuator/health
+      port: 8080
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 10 
+    failureThreshold: 6
+  replicas: 3
+  revisionHistoryLimit: 15 
+  strategyType: RollingUpdate
+  rollingUpdate:
+      maxUnavailable: 2
+      maxSurge: "20%"
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend
+  imagePullPolicy: Always
+  ports:
+    containerPort: 8080
+    port: 8080
+    protocol: TCP
+  imagePullSecrets:
+    name: docker-config-secret
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+    minAllowed:
+      cpu: 0m
+      memory: 0Mi
+    maxAllowed:
+      cpu: 0.5
+      memory: 500Mi
+
+backend-report:
+  environment: production
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
+  replicas: 1
+  revisionHistoryLimit: 15
+  strategy:
+    type: Recreate
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-backend-report
+  imagePullPolicy: IfNotPresent
+  protocol: TCP
+  containerPort: 8888
+  imagePullSecrets: docker-config-secret
+  env:
+    - name: DB
+      valueFrom:
+        secretKeyRef:
+          name: backend-report
+          key: db
+    - name: PORT
+      valueFrom:
+        secretKeyRef:
+          name: backend-report
+          key: port
+
+
+frontend:
+  environment: production
+  fqdn: std-013-60.k8s.praktikum-services.tech
+  image: gitlab.praktikum-services.ru:5050/std-013-60/sausage-store/sausage-frontend
+  replicas: 1
+  revisionHistoryLimit: 15 
+  strategyType: Recreate
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - frontend
+  imagePullPolicy: Always
+  ports:
+    port: 80
+    targetPort: 80
+    protocol: TCP
+    containerPort: 1080
+  imagePullSecrets:
+    name: docker-config-secret
+  http:
+    paths:
+    - path: /
+      pathType: Prefix
+      backend:
+        service:
+          name: frontend
+          port:
+            number: 80
+  volumeMounts:
+  - name: nginx-conf
+    mountPath: /etc/nginx/conf.d/       
+  volumes:
+    - name: nginx-conf
+      configMap:
+        name: nginx-conf
+        items:
+          - key: nginx.conf
+            path: default.conf
+
+
+
+
+
+
+
