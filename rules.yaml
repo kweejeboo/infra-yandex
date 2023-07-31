@@ -1,0 +1,41 @@
+---
+groups:
+  - name: Sausage store rules
+    rules:
+    - alert: InstanceDown
+      expr: up{app="backend"} == 0
+      for: 1m
+      annotations:
+        title: 'KW Instance {{ $labels.instance }} is DOWN'
+        description: ' {{ $labels.instance }} is DOWN for more than 1 minute'
+      labels:
+        severity: critical
+        project: "sausage_store"
+        component: "Backend"
+    - alert: Latency
+      expr: histogram_quantile(0.95,rate(http_server_requests_seconds_bucket{method="POST",uri="api/orders",status!~"4..|5.."}[5m])) > 0.1
+      annotations:
+        title: 'KW High Latency on {{ $labels.instance }}'
+        description: ' 95 percentile for latency is OVER 100ms'
+      labels:
+        severity: warning
+        project: "sausage_store"
+        component: "Backend"
+    - alert: Error500
+      expr: http_server_requests_seconds_count{status="500"} > 0
+      annotations:
+        title: 'KW Instance {{ $labels.instance }} received error 500'
+        description: 'Errors code 500 on {{ $labels.instance }}'
+      labels:
+        severity: warning
+        project: "sausage_store"
+        component: "Backend"
+    - alert: Errors
+      expr: rate(http_server_requests_seconds_bucket{uri="/actuator/prometheus",status=~"4..|5.."}[2m]) > 0
+      annotations:
+        title: 'KW Instance {{ $labels.instance }} is receiving errors on /actuator/prometheus'
+        description: ' {{ $labels.instance }} is receiving 4..;5.. errors on /actuator/prometheus'
+      labels:
+        severity: warning
+        project: "sausage_store"
+        component: "Backend"
